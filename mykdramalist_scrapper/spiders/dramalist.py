@@ -1,7 +1,6 @@
 import logging
 import re
 
-import nltk
 import scrapy
 from fake_useragent import UserAgent
 
@@ -31,7 +30,7 @@ class DramalistSpider(scrapy.Spider):
         Yields:
             scrapy.Request: Scrapy request made to the first page of top shows
         """
-        start_url = "https://mydramalist.com/shows/top"
+        start_url = "https://mydramalist.com/search?adv=titles&ty=68,77,83&co=3&rt=4,10&st=3&so=top"
 
         yield scrapy.Request(start_url, headers=self.headers, callback=self.parse)
 
@@ -50,7 +49,7 @@ class DramalistSpider(scrapy.Spider):
         """
         MAX_PAGES = self.get_max_page(response)
         for i in range(1, MAX_PAGES + 1):
-            url = "https://mydramalist.com/shows/top?page=" + str(i)
+            url = "https://mydramalist.com/search?adv=titles&ty=68,77,83&co=3&rt=4,10&st=3&so=top&page=" + str(i)
             yield scrapy.Request(url, headers=self.headers,
                                  callback=self.scrap)
 
