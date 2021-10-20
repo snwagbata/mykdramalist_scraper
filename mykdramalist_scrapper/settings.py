@@ -17,7 +17,7 @@ NEWSPIDER_MODULE = 'mykdramalist_scrapper.spiders'
 #USER_AGENT = 'mykdramalist_scrapper (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = False
+ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -63,6 +63,7 @@ ROBOTSTXT_OBEY = False
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
+    'mykdramalist_scrapper.pipelines.DuplicatesPipeline': 200,
     'mykdramalist_scrapper.pipelines.MykdramalistScrapperPipeline': 300,
 }
 
