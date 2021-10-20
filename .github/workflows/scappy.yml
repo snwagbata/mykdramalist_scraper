@@ -25,13 +25,13 @@ jobs:
           fileName: "mydramalist-520e5-aaf4d4cbbb0b.json"
           encodedString: ${{ secrets.SERVICE_ACCOUNT }}
       
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2.2.2
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Install Dependences
-      - run: |
+        run: |
             python -m pip install --upgrade pip
             if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
