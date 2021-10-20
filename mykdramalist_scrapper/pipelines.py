@@ -22,7 +22,8 @@ class MykdramalistScrapperPipeline:
         return item
 
     def __init__(self):
-        self.db = firestore.Client.from_service_account_json('./mydramalist-520e5-aaf4d4cbbb0b.json')
+        self.db = firestore.Client.from_service_account_json(os.environ['steps.write_file.outputs.filePath'])
+        # self.db = firestore.Client.from_service_account_json('./mydramalist-520e5-aaf4d4cbbb0b.json')
 
     def process_item(self, item, spider):
         """
