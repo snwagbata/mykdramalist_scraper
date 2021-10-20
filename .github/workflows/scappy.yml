@@ -24,7 +24,9 @@ jobs:
         with:
           fileName: "mydramalist-520e5-aaf4d4cbbb0b.json"
           encodedString: ${{ secrets.SERVICE_ACCOUNT }}
-      
+        env:
+          FILE_PATH: ${{ steps.write_file.outputs.filePath }}
+
       - name: Setup Python
         uses: actions/setup-python@v2.2.2
         with:
