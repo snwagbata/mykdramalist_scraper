@@ -16,6 +16,8 @@ jobs:
       matrix:
         python-version: [3.9]
     steps:
+      - uses: actions/checkout@v2
+
       - name: Get Service Account Json
         id: write_file
         uses: timheuer/base64-to-file@v1
@@ -23,7 +25,6 @@ jobs:
           fileName: "mydramalist-520e5-aaf4d4cbbb0b.json"
           encodedString: ${{ secrets.SERVICE_ACCOUNT }}
       
-      - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
