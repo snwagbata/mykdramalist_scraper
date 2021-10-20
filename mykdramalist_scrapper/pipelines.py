@@ -3,47 +3,26 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
+# Possible here in pipeline - set different pipelines for each of the spiders
+# All pipelines will check if item is in db before adding to db
+# TODO: if item is in db, then change the drama status field to [completed, ongoing, upcomign]
+# this will eliminate the need for having to store the data from each spider in a different collection.
 
-import json
-import os
 
-import mysql.connector
-from dotenv import load_dotenv
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
+from scrapy.exceptions import DropItem
+from google.cloud import firestore
+
+import os;
 
 
-class InsertItem:
+class MykdramalistScrapperPipeline:
+    def process_item(self, item, spider):
+        return item
 
     def __init__(self):
-        load_dotenv()
-        self.db_connection()
-
-    def db_connection(self):
-        """
-        Create a connection to the database
-        """
-        self.db = mysql.connector.connect(
-            host=os.getenv("HOST"),
-            user=os.getenv("USERNAME"),
-            passwd=os.getenv("PASSWORD"),
-            database=os.getenv("DB")
-        )
-        self.cursor = self.db.cursor(dictionary=True)
-
-    def convert_to_json_string(self, item):
-        """
-        Convert every value of format dictionary to a json string
-        Args:
-            item (dict): item returned by our Scrapy spider
-        Returns:
-            dict: Informations about a drama with JSON strings
-        """
-        for key in item:
-            if isinstance(item[key], list):
-                item[key] = json.dumps(item[key])
-
-        return item
+        self.db = firestore.Client.from_service_account_json('./mydramalist-520e5-aaf4d4cbbb0b.json')
 
     def process_item(self, item, spider):
         """
@@ -53,14 +32,18 @@ class InsertItem:
             item (dict): item returned by our Scrapy spider
             spider (scrapy.Spider): Scrapy spider object
         """
-        if spider.sql:
-            query = "INSERT INTO drama (name, synopsis, duration, nb_episodes, " \
-                    "country, rating, ranking, popularity_rank, nb_watchers, " \
-                    "nb_ratings, nb_reviews, streamed_on, genres, tags, " \
-                    "mydramalisturl, screenwriter, director, mainroles, " \
-                    "supportingroles, guestroles) VALUES (%s, %s, %s, %s, %s, " \
-                    "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            item = self.convert_to_json_string(item)
-            values = tuple(item.values())
-            self.cursor.execute(query, values)
-            self.db.commit()
+        self.db.collection(u'dramas').add(ItemAdapter(item).asdict())
+
+
+# class DuplicatesPipeline:
+
+#     def __init__(self):
+#         self.ids_seen = set()
+
+#     def process_item(self, item, spider):
+#         adapter = ItemAdapter(item)
+#         if adapter['id'] i self.ids_seen:
+#             raise DropItem(f"Duplicate item found: {item!r}")
+#         else:
+#             self.ids_seen.add(adapter['id'])
+#             return item
