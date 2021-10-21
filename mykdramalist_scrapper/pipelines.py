@@ -22,7 +22,8 @@ class MykdramalistScrapperPipeline:
         return item
 
     def __init__(self):
-        self.db = firestore.Client.from_service_account_json(os.environ['FILE_PATH'])
+        # use below with github actions as that will infer project_id based on environment
+        self.db = firestore.Client()
         # self.db = firestore.Client.from_service_account_json('./mydramalist-520e5-aaf4d4cbbb0b.json')
 
     def process_item(self, item, spider):
