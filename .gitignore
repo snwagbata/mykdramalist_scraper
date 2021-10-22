@@ -1,2 +1,4 @@
 .env
 *.json
+todo
+__pycache__/
