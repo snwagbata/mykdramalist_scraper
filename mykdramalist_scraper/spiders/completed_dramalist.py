@@ -11,8 +11,8 @@ class CompletedDramalistSpider(scrapy.Spider):
 
     custom_settings = {
         'ITEM_PIPELINES': {
-            # 'mykdramalist_scrapper.pipelines.DuplicatesPipeline': 200,
-            'mykdramalist_scrapper.pipelines.MykdramalistScrapperPipeline': 300,
+            # 'mykdramalist_scraper.pipelines.DuplicatesPipeline': 200,
+            'mykdramalist_scraper.pipelines.MykdramalistScraperPipeline': 300,
         }
     }
 
@@ -73,6 +73,7 @@ class CompletedDramalistSpider(scrapy.Spider):
 
         return max_page
 
+    # TODO: Fix issue where some slugs are empty in DB
     def get_drama_slug(self, response):
         """
         Method to get the slug of the drama being scrapped. This slug is unique 
@@ -87,7 +88,10 @@ class CompletedDramalistSpider(scrapy.Spider):
         """
 
         slug = response.url
-        slug = re.search(r"[^/]*$", slug).group(0)
+        slug = str(re.search(r"[^/]*$", slug).group(0))
+
+        if not slug:
+            logging.error("No Slug: ******************************************************************")
 
         return slug
 
