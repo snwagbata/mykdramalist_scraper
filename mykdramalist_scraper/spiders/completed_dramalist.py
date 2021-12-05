@@ -88,7 +88,7 @@ class CompletedDramalistSpider(scrapy.Spider):
         """
 
         slug = response.url
-        slug = str(re.search(r"[^/]*$", slug).group(0))
+        slug = str(re.search(r"[^\/]*$", slug).group(0))
 
         if not slug:
             logging.error("No Slug: ******************************************************************")
