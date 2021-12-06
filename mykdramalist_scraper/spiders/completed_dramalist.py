@@ -512,9 +512,9 @@ class CompletedDramalistSpider(scrapy.Spider):
             scrapy.Request: Scrapy Request to the cast tab.
         """
         data = {
-            "slug": self.get_drama_slug(response),
             "name": self.get_drama_name(response),
             "synopsis": self.get_drama_synopsis(response),
+            #"year": self.get_drama_year(response),
             "episode_duration_in_minutes": self.get_duration(response),
             "nb_episodes": self.get_nb_episodes(response),
             "country_origin": self.get_country_origin(response),
@@ -526,7 +526,8 @@ class CompletedDramalistSpider(scrapy.Spider):
             "nb_reviews": self.get_nb_reviews(response),
             "genres": self.get_genres(response),
             "tags": self.get_tags(response),
-            "mydramalist_url": response.url
+            "mydramalist_url": response.url,
+            "slug": str(re.search(r"[^\/]*$", response.url).group(0)),
         }
         casting_url = response.url + "/cast"
         yield scrapy.Request(casting_url, headers=self.headers,
