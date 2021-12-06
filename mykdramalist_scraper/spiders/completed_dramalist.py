@@ -87,7 +87,7 @@ class CompletedDramalistSpider(scrapy.Spider):
         Returns:
             str: slug of the drama page
         """
-        slug = urlparse(response.url).path
+        slug = urlparse(str(response.url)).path
 
         if not slug:
             print("Slug is empty" + response.url)
