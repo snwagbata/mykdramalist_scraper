@@ -1,5 +1,6 @@
 import logging
 import re
+from urllib.parse import urlparse
 
 import scrapy
 from fake_useragent import UserAgent
@@ -86,9 +87,7 @@ class CompletedDramalistSpider(scrapy.Spider):
         Returns:
             str: slug of the drama page
         """
-
-        slug = response.url
-        slug = str(re.search(r"[^\/]*$", slug).group(0))
+        slug = urlparse(response.url).path
 
         if not slug:
             print("Slug is empty" + response.url)
@@ -527,7 +526,7 @@ class CompletedDramalistSpider(scrapy.Spider):
             "genres": self.get_genres(response),
             "tags": self.get_tags(response),
             "mydramalist_url": response.url,
-            "slug": str(re.search(r"[^\/]*$", response.url).group(0)),
+            "slug": self.get_drama_slug(response),
         }
         casting_url = response.url + "/cast"
         yield scrapy.Request(casting_url, headers=self.headers,
