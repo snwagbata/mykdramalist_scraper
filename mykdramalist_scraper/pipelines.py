@@ -34,7 +34,13 @@ class MykdramalistScraperPipeline:
             item (dict): item returned by our Scrapy spider
             spider (scrapy.Spider): Scrapy spider object
         """
-        self.db.collection(u'dramas').add(ItemAdapter(item).asdict())
+        # get item's slug
+        slug = item['slug']
+        if slug is not None:
+            # add to firestore using item's slug as id
+            self.db.collection(u'dramas').document(slug).set(ItemAdapter(item).asdict())
+        # else:
+        #     self.db.collection('dramas').add(ItemAdapter(item).asdict())
 
 
 # class DuplicatesPipeline:
