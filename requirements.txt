@@ -21,7 +21,7 @@ itemloaders==1.0.4
 jedi==0.18.0
 jmespath==0.10.0
 joblib==1.0.0
-lxml==4.6.3
+lxml>=4.6.5
 mysql-connector-python==8.0.22
 parsel==1.6.0
 parso==0.8.1
