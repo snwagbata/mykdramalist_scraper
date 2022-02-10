@@ -1,7 +1,7 @@
 import logging
 import re
 from urllib.parse import urlparse
-import datetime
+from datetime import date
 
 import scrapy
 from fake_useragent import UserAgent
@@ -528,7 +528,7 @@ class CompletedDramalistSpider(scrapy.Spider):
             "tags": self.get_tags(response),
             "mydramalist_url": response.url,
             "slug": self.get_drama_slug(response),
-            "last_indexed": datetime.today().strftime("%Y-%m-%d %H:%M:%S"),
+            "last_indexed": date.today().strftime("%Y-%m-%d %H:%M:%S"),
         }
         casting_url = response.url + "/cast"
         yield scrapy.Request(casting_url, headers=self.headers,
