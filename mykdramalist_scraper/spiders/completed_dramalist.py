@@ -528,7 +528,7 @@ class CompletedDramalistSpider(scrapy.Spider):
             "tags": self.get_tags(response),
             "mydramalist_url": response.url,
             "slug": self.get_drama_slug(response),
-            "last_indexed": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "last_indexed": datetime.today().strftime("%Y-%m-%d %H:%M:%S"),
         }
         casting_url = response.url + "/cast"
         yield scrapy.Request(casting_url, headers=self.headers,
