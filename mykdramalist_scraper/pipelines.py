@@ -23,7 +23,8 @@ class MykdramalistScraperPipeline:
 
     def __init__(self):
         # use below with github actions as that will infer project_id based on environment
-        self.db = firestore.Client()
+        # self.db = firestore.Client()
+        self.db = firestore.Client.from_service_account_json('./test-1a77a-167f4c077928.json')
         # self.db = firestore.Client.from_service_account_json('./mydramalist-520e5-aaf4d4cbbb0b.json')
 
     def process_item(self, item, spider):
@@ -37,10 +38,12 @@ class MykdramalistScraperPipeline:
         # get item's slug
         slug = item['slug']
         if slug is not None:
-            # add to firestore using item's slug as id
+            # # add to firestore using item's slug as id
+            #TODO: we'll most likely use timestamp to check delete items from collections like the upcoming and ongoing
+            # if not self.db.collection('dramas').document(slug).get().exists:
             self.db.collection(u'dramas').document(slug).set(ItemAdapter(item).asdict())
-        # else:
-        #     self.db.collection('dramas').add(ItemAdapter(item).asdict())
+        else:
+            self.db.collection('dramas').add(ItemAdapter(item).asdict())
 
 
 # class DuplicatesPipeline:

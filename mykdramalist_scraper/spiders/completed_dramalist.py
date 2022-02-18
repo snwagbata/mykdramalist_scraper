@@ -1,7 +1,7 @@
 import logging
 import re
 from urllib.parse import urlparse
-from datetime import date
+from google.cloud import firestore
 
 import scrapy
 from fake_useragent import UserAgent
@@ -89,6 +89,7 @@ class CompletedDramalistSpider(scrapy.Spider):
             str: slug of the drama page
         """
         slug = urlparse(str(response.url)).path
+        slug = slug.replace("/", "")
 
         if not slug:
             print("Slug is empty" + response.url)
@@ -528,7 +529,7 @@ class CompletedDramalistSpider(scrapy.Spider):
             "tags": self.get_tags(response),
             "mydramalist_url": response.url,
             "slug": self.get_drama_slug(response),
-            "last_indexed": date.today().strftime("%Y-%m-%d %H:%M:%S"),
+            "last_indexed": firestore.SERVER_TIMESTAMP,
         }
         casting_url = response.url + "/cast"
         yield scrapy.Request(casting_url, headers=self.headers,
