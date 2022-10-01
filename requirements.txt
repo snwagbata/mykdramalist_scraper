@@ -20,7 +20,7 @@ itemadapter==0.2.0
 itemloaders==1.0.4
 jedi==0.18.0
 jmespath==0.10.0
-joblib==1.0.0
+joblib==1.2.0
 lxml>=4.6.5
 mysql-connector-python==8.0.22
 parsel==1.6.0
