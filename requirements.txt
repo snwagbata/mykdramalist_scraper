@@ -46,7 +46,7 @@ Scrapy==2.17.0
 service-identity==18.1.0
 six==1.15.0
 toml==0.10.2
-tqdm==4.55.0
+tqdm==4.66.3
 traitlets==5.0.5
 twisted>=22.1
 w3lib==1.22.0
